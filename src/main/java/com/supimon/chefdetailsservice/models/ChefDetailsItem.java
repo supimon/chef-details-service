@@ -9,8 +9,12 @@ public class ChefDetailsItem {
     private String motherTongue;
     private String emailId;
     private int noticePeriod;
+    private Double rating;
+    private Integer recommendations;
+    private Boolean verified;
 
-    public ChefDetailsItem(String phoneNumber, String speciality, String desc, int expectedSalary, String motherTongue, String emailId, int noticePeriod) {
+    public ChefDetailsItem(String phoneNumber, String speciality, String desc, int expectedSalary, String motherTongue,
+                           String emailId, int noticePeriod, Double rating, Integer recommendations, Boolean verified) {
         this.phoneNumber = phoneNumber;
         this.speciality = speciality;
         this.desc = desc;
@@ -18,6 +22,9 @@ public class ChefDetailsItem {
         this.motherTongue = motherTongue;
         this.emailId = emailId;
         this.noticePeriod = noticePeriod;
+        this.rating = rating;
+        this.recommendations = recommendations;
+        this.verified = verified;
     }
 
     public String getPhoneNumber() {
@@ -74,5 +81,29 @@ public class ChefDetailsItem {
 
     public void setNoticePeriod(int noticePeriod) {
         this.noticePeriod = noticePeriod;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Integer getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(Integer recommendations) {
+        this.recommendations = recommendations;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
 }
