@@ -5,16 +5,19 @@ public class ChefDetailsItem {
     private String phoneNumber;
     private String speciality;
     private String desc;
-    private int expectedSalary;
+    private Long expectedSalary;
     private String motherTongue;
     private String emailId;
-    private int noticePeriod;
+    private Long noticePeriod;
     private Double rating;
-    private Integer recommendations;
+    private Long recommendations;
     private Boolean verified;
 
-    public ChefDetailsItem(String phoneNumber, String speciality, String desc, int expectedSalary, String motherTongue,
-                           String emailId, int noticePeriod, Double rating, Integer recommendations, Boolean verified) {
+    public ChefDetailsItem() {
+    }
+
+    public ChefDetailsItem(String phoneNumber, String speciality, String desc, Long expectedSalary, String motherTongue,
+                           String emailId, Long noticePeriod, Double rating, Long recommendations, Boolean verified) {
         this.phoneNumber = phoneNumber;
         this.speciality = speciality;
         this.desc = desc;
@@ -51,11 +54,11 @@ public class ChefDetailsItem {
         this.desc = desc;
     }
 
-    public int getExpectedSalary() {
+    public Long getExpectedSalary() {
         return expectedSalary;
     }
 
-    public void setExpectedSalary(int expectedSalary) {
+    public void setExpectedSalary(Long expectedSalary) {
         this.expectedSalary = expectedSalary;
     }
 
@@ -75,11 +78,11 @@ public class ChefDetailsItem {
         this.emailId = emailId;
     }
 
-    public int getNoticePeriod() {
+    public Long getNoticePeriod() {
         return noticePeriod;
     }
 
-    public void setNoticePeriod(int noticePeriod) {
+    public void setNoticePeriod(Long noticePeriod) {
         this.noticePeriod = noticePeriod;
     }
 
@@ -91,11 +94,11 @@ public class ChefDetailsItem {
         this.rating = rating;
     }
 
-    public Integer getRecommendations() {
+    public Long getRecommendations() {
         return recommendations;
     }
 
-    public void setRecommendations(Integer recommendations) {
+    public void setRecommendations(Long recommendations) {
         this.recommendations = recommendations;
     }
 

@@ -1,8 +1,8 @@
 package com.supimon.chefdetailsservice.resource;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import com.supimon.chefdetailsservice.models.ChefDetailsItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/chefDetails")
@@ -21,29 +21,33 @@ public class ChefDetailsService {
     private RestTemplate restTemplate;
 
     @RequestMapping("/{chefId}")
-    public ChefDetailsItem getChefDetails(@PathVariable("chefId") String chefId) throws IOException {
+    public ChefDetailsItem getChefDetails(@PathVariable("chefId") String chefId) throws InterruptedException, ExecutionException {
 
-        FileInputStream serviceAccount =
-                new FileInputStream("src/main/resources/chefapp-eeae0-firebase-adminsdk-tujtr-198a71e00a.json");
+        Firestore db = FirestoreClient.getFirestore();
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setDatabaseUrl("https://chefapp-eeae0.firebaseio.com")
-                .build();
+        CollectionReference chefDetail = db.collection("more-chef-details");
+        // Create a query against the collection.
+        Query query = chefDetail.whereEqualTo("chefId", chefId);
 
-        FirebaseApp.initializeApp(options);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-        return new ChefDetailsItem(
-                "1234567890",
-                "chinese",
-                "I am an excellent chef",
-                20000,
-                "Asamese",
-                "bhajan@bhajan.com",
-                20,
-                restTemplate.getForObject("http://localhost:8081/ratings/" + chefId, Double.class),
-                restTemplate.getForObject("http://localhost:8082/recommendations/" + chefId, Integer.class),
-                restTemplate.getForObject("http://localhost:8083/verification/" + chefId, Boolean.class)
-        );
+        List<QueryDocumentSnapshot> documents = querySnapshot.get().getDocuments();
+
+        ChefDetailsItem chefDetails = new ChefDetailsItem();
+
+        for (QueryDocumentSnapshot document : documents) {
+            chefDetails.setPhoneNumber(document.getString("phoneNumber"));
+            chefDetails.setSpeciality(document.getString("speciality"));
+            chefDetails.setDesc(document.getString("desc"));
+            chefDetails.setExpectedSalary(document.getLong("expectedSalary"));
+            chefDetails.setMotherTongue(document.getString("motherTongue"));
+            chefDetails.setEmailId(document.getString("emailId"));
+            chefDetails.setNoticePeriod(document.getLong("noticePeriod"));
+            chefDetails.setRating(restTemplate.getForObject("http://localhost:8081/ratings/" + chefId, Double.class));
+            chefDetails.setRecommendations(restTemplate.getForObject("http://localhost:8082/recommendations/" + chefId, Long.class));
+            chefDetails.setVerified(restTemplate.getForObject("http://localhost:8083/verification/" + chefId, Boolean.class));
+        }
+
+        return chefDetails;
     }
 }
