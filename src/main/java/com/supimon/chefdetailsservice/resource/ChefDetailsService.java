@@ -43,9 +43,9 @@ public class ChefDetailsService {
             chefDetails.setMotherTongue(document.getString("motherTongue"));
             chefDetails.setEmailId(document.getString("emailId"));
             chefDetails.setNoticePeriod(document.getLong("noticePeriod"));
-            chefDetails.setRating(restTemplate.getForObject("http://localhost:8081/ratings/" + chefId, Double.class));
-            chefDetails.setRecommendations(restTemplate.getForObject("http://localhost:8082/recommendations/" + chefId, Long.class));
-            chefDetails.setVerified(restTemplate.getForObject("http://localhost:8083/verification/" + chefId, Boolean.class));
+            chefDetails.setRating(restTemplate.getForObject("http://ratings-service/ratings/" + chefId, Double.class));
+            chefDetails.setRecommendations(restTemplate.getForObject("http://recommendation-service/recommendations/" + chefId, Long.class));
+            chefDetails.setVerified(restTemplate.getForObject("http://verification-service/verification/" + chefId, Boolean.class));
         }
 
         return chefDetails;
